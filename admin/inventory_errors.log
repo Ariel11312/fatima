@@ -1,0 +1,283 @@
+[18-Apr-2025 13:42:34 Europe/Berlin] PHP Warning:  require_once(db_config.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 13:42:34 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'db_config.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\fatima\admin\add-product.php:12
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 13:43:28 Europe/Berlin] PHP Warning:  require_once(db_config.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 13:43:28 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'db_config.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\fatima\admin\add-product.php:12
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 13:43:50 Europe/Berlin] PHP Warning:  require_once(db_config.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 13:43:50 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'db_config.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\fatima\admin\add-product.php:12
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 13:44:39 Europe/Berlin] PHP Warning:  require_once(db_config.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 13:44:39 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'db_config.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\fatima\admin\add-product.php:12
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 13:48:56 Europe/Berlin] PHP Warning:  require_once(db_config.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 13:48:56 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'db_config.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\fatima\admin\add-product.php:12
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 13:55:08 Europe/Berlin] PHP Warning:  require_once(db_config.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 13:55:08 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'db_config.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\fatima\admin\add-product.php:12
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 13:56:08 Europe/Berlin] PHP Warning:  require_once(db_config.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 13:56:08 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'db_config.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\fatima\admin\add-product.php:12
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 13:56:49 Europe/Berlin] PHP Warning:  require_once(db_config.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 13:56:49 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'db_config.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\fatima\admin\add-product.php:12
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 13:57:08 Europe/Berlin] PHP Warning:  require_once(db_config.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 13:57:08 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'db_config.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\fatima\admin\add-product.php:12
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 14:01:31 Europe/Berlin] PHP Warning:  require_once(db_config.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 14:01:31 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'db_config.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\fatima\admin\add-product.php:12
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 14:02:49 Europe/Berlin] PHP Warning:  require_once(db_config.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 14:02:49 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'db_config.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\fatima\admin\add-product.php:12
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 14:06:03 Europe/Berlin] PHP Warning:  require_once(connection.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 14:06:03 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'connection.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\fatima\admin\add-product.php:12
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 14:21:10 Europe/Berlin] PHP Warning:  require_once(db_config.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 14:21:10 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'db_config.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\fatima\admin\add-product.php:12
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 14:21:11 Europe/Berlin] PHP Warning:  require_once(db_config.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 14:21:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'db_config.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\fatima\admin\add-product.php:12
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 12
+[18-Apr-2025 14:22:07 Europe/Berlin] Error in inventory handler: Database connection failed in C:\xampp\htdocs\fatima\admin\add-product.php on line 77 Stack trace: #0 {main}
+[18-Apr-2025 14:25:59 Europe/Berlin] Error in inventory handler: Database connection failed in C:\xampp\htdocs\fatima\admin\add-product.php on line 77 Stack trace: #0 {main}
+[18-Apr-2025 14:26:28 Europe/Berlin] Error in inventory handler: Database connection failed in C:\xampp\htdocs\fatima\admin\add-product.php on line 77 Stack trace: #0 {main}
+[18-Apr-2025 14:27:10 Europe/Berlin] Error in inventory handler: Database connection failed in C:\xampp\htdocs\fatima\admin\add-product.php on line 77 Stack trace: #0 {main}
+[18-Apr-2025 14:27:27 Europe/Berlin] Error in inventory handler: Database connection failed in C:\xampp\htdocs\fatima\admin\add-product.php on line 77 Stack trace: #0 {main}
+[18-Apr-2025 14:27:30 Europe/Berlin] Error in inventory handler: Database connection failed in C:\xampp\htdocs\fatima\admin\add-product.php on line 77 Stack trace: #0 {main}
+[18-Apr-2025 14:30:15 Europe/Berlin] Error in inventory handler: Database connection failed in C:\xampp\htdocs\fatima\admin\add-product.php on line 77 Stack trace: #0 {main}
+[18-Apr-2025 14:37:04 Europe/Berlin] PHP Warning:  Undefined variable $item_id in C:\xampp\htdocs\fatima\admin\add-product.php on line 61
+[18-Apr-2025 14:37:04 Europe/Berlin] Error in inventory handler: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 2 in C:\xampp\htdocs\fatima\admin\add-product.php on line 75 Stack trace: #0 C:\xampp\htdocs\fatima\admin\add-product.php(75): mysqli_prepare(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+[18-Apr-2025 14:37:47 Europe/Berlin] PHP Warning:  Undefined array key "item_name" in C:\xampp\htdocs\fatima\admin\add-product.php on line 16
+[18-Apr-2025 14:37:47 Europe/Berlin] PHP Warning:  Undefined array key "category" in C:\xampp\htdocs\fatima\admin\add-product.php on line 17
+[18-Apr-2025 14:37:47 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 22
+[18-Apr-2025 14:37:47 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 24
+[18-Apr-2025 14:37:47 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 27
+[18-Apr-2025 14:37:47 Europe/Berlin] Error in inventory handler: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 2 in C:\xampp\htdocs\fatima\admin\add-product.php on line 75 Stack trace: #0 C:\xampp\htdocs\fatima\admin\add-product.php(75): mysqli_prepare(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+[18-Apr-2025 14:37:47 Europe/Berlin] PHP Warning:  Undefined array key "item_name" in C:\xampp\htdocs\fatima\admin\add-product.php on line 16
+[18-Apr-2025 14:37:47 Europe/Berlin] PHP Warning:  Undefined array key "category" in C:\xampp\htdocs\fatima\admin\add-product.php on line 17
+[18-Apr-2025 14:37:47 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 22
+[18-Apr-2025 14:37:47 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 24
+[18-Apr-2025 14:37:47 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 27
+[18-Apr-2025 14:37:47 Europe/Berlin] Error in inventory handler: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 2 in C:\xampp\htdocs\fatima\admin\add-product.php on line 75 Stack trace: #0 C:\xampp\htdocs\fatima\admin\add-product.php(75): mysqli_prepare(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+[18-Apr-2025 14:38:09 Europe/Berlin] PHP Warning:  Undefined array key "item_name" in C:\xampp\htdocs\fatima\admin\add-product.php on line 16
+[18-Apr-2025 14:38:09 Europe/Berlin] PHP Warning:  Undefined array key "category" in C:\xampp\htdocs\fatima\admin\add-product.php on line 17
+[18-Apr-2025 14:38:09 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 22
+[18-Apr-2025 14:38:09 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 24
+[18-Apr-2025 14:38:09 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 27
+[18-Apr-2025 14:38:09 Europe/Berlin] Error in inventory handler: Unknown column 'subcategory' in 'field list' in C:\xampp\htdocs\fatima\admin\add-product.php on line 75 Stack trace: #0 C:\xampp\htdocs\fatima\admin\add-product.php(75): mysqli_prepare(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+[18-Apr-2025 14:38:55 Europe/Berlin] PHP Warning:  Undefined array key "category" in C:\xampp\htdocs\fatima\admin\add-product.php on line 17
+[18-Apr-2025 14:38:55 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 22
+[18-Apr-2025 14:38:55 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 24
+[18-Apr-2025 14:38:55 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 27
+[18-Apr-2025 14:38:55 Europe/Berlin] Error in inventory handler: Unknown column 'subcategory' in 'field list' in C:\xampp\htdocs\fatima\admin\add-product.php on line 75 Stack trace: #0 C:\xampp\htdocs\fatima\admin\add-product.php(75): mysqli_prepare(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+[18-Apr-2025 14:38:59 Europe/Berlin] PHP Warning:  Undefined array key "category" in C:\xampp\htdocs\fatima\admin\add-product.php on line 17
+[18-Apr-2025 14:38:59 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 22
+[18-Apr-2025 14:38:59 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 24
+[18-Apr-2025 14:38:59 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 27
+[18-Apr-2025 14:38:59 Europe/Berlin] Error in inventory handler: Unknown column 'subcategory' in 'field list' in C:\xampp\htdocs\fatima\admin\add-product.php on line 75 Stack trace: #0 C:\xampp\htdocs\fatima\admin\add-product.php(75): mysqli_prepare(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+[18-Apr-2025 14:39:48 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 22
+[18-Apr-2025 14:39:48 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 24
+[18-Apr-2025 14:39:48 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 27
+[18-Apr-2025 14:39:48 Europe/Berlin] Error in inventory handler: Unknown column 'subcategory' in 'field list' in C:\xampp\htdocs\fatima\admin\add-product.php on line 75 Stack trace: #0 C:\xampp\htdocs\fatima\admin\add-product.php(75): mysqli_prepare(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+[18-Apr-2025 14:39:49 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 22
+[18-Apr-2025 14:39:49 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 24
+[18-Apr-2025 14:39:49 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 27
+[18-Apr-2025 14:39:49 Europe/Berlin] Error in inventory handler: Unknown column 'subcategory' in 'field list' in C:\xampp\htdocs\fatima\admin\add-product.php on line 75 Stack trace: #0 C:\xampp\htdocs\fatima\admin\add-product.php(75): mysqli_prepare(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+[18-Apr-2025 14:39:49 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 22
+[18-Apr-2025 14:39:49 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 24
+[18-Apr-2025 14:39:49 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 27
+[18-Apr-2025 14:39:49 Europe/Berlin] Error in inventory handler: Unknown column 'subcategory' in 'field list' in C:\xampp\htdocs\fatima\admin\add-product.php on line 75 Stack trace: #0 C:\xampp\htdocs\fatima\admin\add-product.php(75): mysqli_prepare(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+[18-Apr-2025 14:39:49 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 22
+[18-Apr-2025 14:39:49 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 24
+[18-Apr-2025 14:39:49 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 27
+[18-Apr-2025 14:39:49 Europe/Berlin] Error in inventory handler: Unknown column 'subcategory' in 'field list' in C:\xampp\htdocs\fatima\admin\add-product.php on line 75 Stack trace: #0 C:\xampp\htdocs\fatima\admin\add-product.php(75): mysqli_prepare(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+[18-Apr-2025 14:39:49 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 22
+[18-Apr-2025 14:39:49 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 24
+[18-Apr-2025 14:39:49 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 27
+[18-Apr-2025 14:39:49 Europe/Berlin] Error in inventory handler: Unknown column 'subcategory' in 'field list' in C:\xampp\htdocs\fatima\admin\add-product.php on line 75 Stack trace: #0 C:\xampp\htdocs\fatima\admin\add-product.php(75): mysqli_prepare(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+[18-Apr-2025 14:39:49 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 22
+[18-Apr-2025 14:39:49 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 24
+[18-Apr-2025 14:39:49 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 27
+[18-Apr-2025 14:39:49 Europe/Berlin] Error in inventory handler: Unknown column 'subcategory' in 'field list' in C:\xampp\htdocs\fatima\admin\add-product.php on line 75 Stack trace: #0 C:\xampp\htdocs\fatima\admin\add-product.php(75): mysqli_prepare(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+[18-Apr-2025 14:39:50 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 22
+[18-Apr-2025 14:39:50 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 24
+[18-Apr-2025 14:39:50 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 27
+[18-Apr-2025 14:39:50 Europe/Berlin] Error in inventory handler: Unknown column 'subcategory' in 'field list' in C:\xampp\htdocs\fatima\admin\add-product.php on line 75 Stack trace: #0 C:\xampp\htdocs\fatima\admin\add-product.php(75): mysqli_prepare(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+[18-Apr-2025 14:39:50 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 22
+[18-Apr-2025 14:39:50 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 24
+[18-Apr-2025 14:39:50 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 27
+[18-Apr-2025 14:39:50 Europe/Berlin] Error in inventory handler: Unknown column 'subcategory' in 'field list' in C:\xampp\htdocs\fatima\admin\add-product.php on line 75 Stack trace: #0 C:\xampp\htdocs\fatima\admin\add-product.php(75): mysqli_prepare(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+[18-Apr-2025 14:39:50 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 22
+[18-Apr-2025 14:39:50 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 24
+[18-Apr-2025 14:39:50 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 27
+[18-Apr-2025 14:39:50 Europe/Berlin] Error in inventory handler: Unknown column 'subcategory' in 'field list' in C:\xampp\htdocs\fatima\admin\add-product.php on line 75 Stack trace: #0 C:\xampp\htdocs\fatima\admin\add-product.php(75): mysqli_prepare(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+[18-Apr-2025 14:43:14 Europe/Berlin] PHP Warning:  Undefined array key "item_name" in C:\xampp\htdocs\fatima\admin\add-product.php on line 16
+[18-Apr-2025 14:43:14 Europe/Berlin] PHP Warning:  Undefined array key "category" in C:\xampp\htdocs\fatima\admin\add-product.php on line 17
+[18-Apr-2025 14:43:14 Europe/Berlin] PHP Warning:  Undefined array key "subcategory" in C:\xampp\htdocs\fatima\admin\add-product.php on line 18
+[18-Apr-2025 14:43:14 Europe/Berlin] PHP Warning:  Undefined array key "sku" in C:\xampp\htdocs\fatima\admin\add-product.php on line 19
+[18-Apr-2025 14:43:14 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 22
+[18-Apr-2025 14:43:14 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 24
+[18-Apr-2025 14:43:14 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 27
+[18-Apr-2025 14:43:14 Europe/Berlin] PHP Warning:  Undefined variable $lastUpdated in C:\xampp\htdocs\fatima\admin\add-product.php on line 72
+[18-Apr-2025 14:43:14 Europe/Berlin] PHP Warning:  Undefined variable $image in C:\xampp\htdocs\fatima\admin\add-product.php on line 72
+[18-Apr-2025 14:43:14 Europe/Berlin] Error in inventory handler: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' , , , , 0, , , )' at line 2 in C:\xampp\htdocs\fatima\admin\add-product.php on line 75 Stack trace: #0 C:\xampp\htdocs\fatima\admin\add-product.php(75): mysqli_query(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+[18-Apr-2025 14:43:38 Europe/Berlin] PHP Warning:  Undefined array key "item_name" in C:\xampp\htdocs\fatima\admin\add-product.php on line 15
+[18-Apr-2025 14:43:38 Europe/Berlin] PHP Warning:  Undefined array key "category" in C:\xampp\htdocs\fatima\admin\add-product.php on line 16
+[18-Apr-2025 14:43:38 Europe/Berlin] PHP Warning:  Undefined array key "subcategory" in C:\xampp\htdocs\fatima\admin\add-product.php on line 17
+[18-Apr-2025 14:43:38 Europe/Berlin] PHP Warning:  Undefined array key "sku" in C:\xampp\htdocs\fatima\admin\add-product.php on line 18
+[18-Apr-2025 14:43:38 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 21
+[18-Apr-2025 14:43:38 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 23
+[18-Apr-2025 14:43:38 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 26
+[18-Apr-2025 14:43:38 Europe/Berlin] PHP Warning:  Undefined variable $lastUpdated in C:\xampp\htdocs\fatima\admin\add-product.php on line 71
+[18-Apr-2025 14:43:38 Europe/Berlin] PHP Warning:  Undefined variable $image in C:\xampp\htdocs\fatima\admin\add-product.php on line 71
+[18-Apr-2025 14:43:38 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' , , , , 0, , , )' at line 2 in C:\xampp\htdocs\fatima\admin\add-product.php:74
+Stack trace:
+#0 C:\xampp\htdocs\fatima\admin\add-product.php(74): mysqli_query(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 74
+[18-Apr-2025 14:43:51 Europe/Berlin] PHP Warning:  Undefined variable $item_id in C:\xampp\htdocs\fatima\admin\add-product.php on line 60
+[18-Apr-2025 14:43:51 Europe/Berlin] PHP Warning:  Undefined variable $lastUpdated in C:\xampp\htdocs\fatima\admin\add-product.php on line 71
+[18-Apr-2025 14:43:51 Europe/Berlin] PHP Warning:  Undefined variable $image in C:\xampp\htdocs\fatima\admin\add-product.php on line 71
+[18-Apr-2025 14:43:51 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'in-stock, , )' at line 2 in C:\xampp\htdocs\fatima\admin\add-product.php:74
+Stack trace:
+#0 C:\xampp\htdocs\fatima\admin\add-product.php(74): mysqli_query(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 74
+[18-Apr-2025 14:44:14 Europe/Berlin] PHP Warning:  Undefined variable $item_id in C:\xampp\htdocs\fatima\admin\add-product.php on line 60
+[18-Apr-2025 14:44:14 Europe/Berlin] PHP Warning:  Undefined variable $lastUpdated in C:\xampp\htdocs\fatima\admin\add-product.php on line 71
+[18-Apr-2025 14:44:14 Europe/Berlin] PHP Warning:  Undefined variable $image in C:\xampp\htdocs\fatima\admin\add-product.php on line 71
+[18-Apr-2025 14:44:14 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'in-stock, , )' at line 2 in C:\xampp\htdocs\fatima\admin\add-product.php:74
+Stack trace:
+#0 C:\xampp\htdocs\fatima\admin\add-product.php(74): mysqli_query(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 74
+[18-Apr-2025 14:44:53 Europe/Berlin] PHP Warning:  Undefined array key "item_name" in C:\xampp\htdocs\fatima\admin\add-product.php on line 15
+[18-Apr-2025 14:44:53 Europe/Berlin] PHP Warning:  Undefined array key "category" in C:\xampp\htdocs\fatima\admin\add-product.php on line 16
+[18-Apr-2025 14:44:53 Europe/Berlin] PHP Warning:  Undefined array key "subcategory" in C:\xampp\htdocs\fatima\admin\add-product.php on line 17
+[18-Apr-2025 14:44:53 Europe/Berlin] PHP Warning:  Undefined array key "sku" in C:\xampp\htdocs\fatima\admin\add-product.php on line 18
+[18-Apr-2025 14:44:53 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 21
+[18-Apr-2025 14:44:53 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 23
+[18-Apr-2025 14:44:53 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 26
+[18-Apr-2025 14:44:53 Europe/Berlin] PHP Warning:  Undefined variable $lastUpdated in C:\xampp\htdocs\fatima\admin\add-product.php on line 71
+[18-Apr-2025 14:44:53 Europe/Berlin] PHP Warning:  Undefined variable $image in C:\xampp\htdocs\fatima\admin\add-product.php on line 71
+[18-Apr-2025 14:44:53 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' , , , , 0, , , )' at line 2 in C:\xampp\htdocs\fatima\admin\add-product.php:73
+Stack trace:
+#0 C:\xampp\htdocs\fatima\admin\add-product.php(73): mysqli_query(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 73
+[18-Apr-2025 14:44:54 Europe/Berlin] PHP Warning:  Undefined array key "item_name" in C:\xampp\htdocs\fatima\admin\add-product.php on line 15
+[18-Apr-2025 14:44:54 Europe/Berlin] PHP Warning:  Undefined array key "category" in C:\xampp\htdocs\fatima\admin\add-product.php on line 16
+[18-Apr-2025 14:44:54 Europe/Berlin] PHP Warning:  Undefined array key "subcategory" in C:\xampp\htdocs\fatima\admin\add-product.php on line 17
+[18-Apr-2025 14:44:54 Europe/Berlin] PHP Warning:  Undefined array key "sku" in C:\xampp\htdocs\fatima\admin\add-product.php on line 18
+[18-Apr-2025 14:44:54 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 21
+[18-Apr-2025 14:44:54 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 23
+[18-Apr-2025 14:44:54 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 26
+[18-Apr-2025 14:44:54 Europe/Berlin] PHP Warning:  Undefined variable $lastUpdated in C:\xampp\htdocs\fatima\admin\add-product.php on line 71
+[18-Apr-2025 14:44:54 Europe/Berlin] PHP Warning:  Undefined variable $image in C:\xampp\htdocs\fatima\admin\add-product.php on line 71
+[18-Apr-2025 14:44:54 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' , , , , 0, , , )' at line 2 in C:\xampp\htdocs\fatima\admin\add-product.php:73
+Stack trace:
+#0 C:\xampp\htdocs\fatima\admin\add-product.php(73): mysqli_query(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 73
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined array key "item_name" in C:\xampp\htdocs\fatima\admin\add-product.php on line 15
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined array key "category" in C:\xampp\htdocs\fatima\admin\add-product.php on line 16
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined array key "subcategory" in C:\xampp\htdocs\fatima\admin\add-product.php on line 17
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined array key "sku" in C:\xampp\htdocs\fatima\admin\add-product.php on line 18
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 21
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 23
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 26
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined variable $lastUpdated in C:\xampp\htdocs\fatima\admin\add-product.php on line 71
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined variable $image in C:\xampp\htdocs\fatima\admin\add-product.php on line 71
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' , , , , 0, , , )' at line 2 in C:\xampp\htdocs\fatima\admin\add-product.php:73
+Stack trace:
+#0 C:\xampp\htdocs\fatima\admin\add-product.php(73): mysqli_query(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 73
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined array key "item_name" in C:\xampp\htdocs\fatima\admin\add-product.php on line 15
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined array key "category" in C:\xampp\htdocs\fatima\admin\add-product.php on line 16
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined array key "subcategory" in C:\xampp\htdocs\fatima\admin\add-product.php on line 17
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined array key "sku" in C:\xampp\htdocs\fatima\admin\add-product.php on line 18
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 21
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 23
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 26
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined variable $lastUpdated in C:\xampp\htdocs\fatima\admin\add-product.php on line 71
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Warning:  Undefined variable $image in C:\xampp\htdocs\fatima\admin\add-product.php on line 71
+[18-Apr-2025 14:45:26 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' , , , , 0, , , )' at line 2 in C:\xampp\htdocs\fatima\admin\add-product.php:73
+Stack trace:
+#0 C:\xampp\htdocs\fatima\admin\add-product.php(73): mysqli_query(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 73
+[18-Apr-2025 14:45:27 Europe/Berlin] PHP Warning:  Undefined array key "item_name" in C:\xampp\htdocs\fatima\admin\add-product.php on line 15
+[18-Apr-2025 14:45:27 Europe/Berlin] PHP Warning:  Undefined array key "category" in C:\xampp\htdocs\fatima\admin\add-product.php on line 16
+[18-Apr-2025 14:45:27 Europe/Berlin] PHP Warning:  Undefined array key "subcategory" in C:\xampp\htdocs\fatima\admin\add-product.php on line 17
+[18-Apr-2025 14:45:27 Europe/Berlin] PHP Warning:  Undefined array key "sku" in C:\xampp\htdocs\fatima\admin\add-product.php on line 18
+[18-Apr-2025 14:45:27 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 21
+[18-Apr-2025 14:45:27 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 23
+[18-Apr-2025 14:45:27 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 26
+[18-Apr-2025 14:45:27 Europe/Berlin] PHP Warning:  Undefined variable $lastUpdated in C:\xampp\htdocs\fatima\admin\add-product.php on line 71
+[18-Apr-2025 14:45:27 Europe/Berlin] PHP Warning:  Undefined variable $image in C:\xampp\htdocs\fatima\admin\add-product.php on line 71
+[18-Apr-2025 14:45:27 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' , , , , 0, , , )' at line 2 in C:\xampp\htdocs\fatima\admin\add-product.php:73
+Stack trace:
+#0 C:\xampp\htdocs\fatima\admin\add-product.php(73): mysqli_query(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 73
+[18-Apr-2025 14:46:46 Europe/Berlin] PHP Warning:  Undefined array key "item_name" in C:\xampp\htdocs\fatima\admin\add-product.php on line 15
+[18-Apr-2025 14:46:46 Europe/Berlin] PHP Warning:  Undefined array key "category" in C:\xampp\htdocs\fatima\admin\add-product.php on line 16
+[18-Apr-2025 14:46:46 Europe/Berlin] PHP Warning:  Undefined array key "subcategory" in C:\xampp\htdocs\fatima\admin\add-product.php on line 17
+[18-Apr-2025 14:46:46 Europe/Berlin] PHP Warning:  Undefined array key "sku" in C:\xampp\htdocs\fatima\admin\add-product.php on line 18
+[18-Apr-2025 14:46:46 Europe/Berlin] PHP Warning:  Undefined array key "quantity" in C:\xampp\htdocs\fatima\admin\add-product.php on line 21
+[18-Apr-2025 14:46:46 Europe/Berlin] PHP Warning:  Undefined array key "price" in C:\xampp\htdocs\fatima\admin\add-product.php on line 23
+[18-Apr-2025 14:46:46 Europe/Berlin] PHP Warning:  Undefined array key "status" in C:\xampp\htdocs\fatima\admin\add-product.php on line 26
+[18-Apr-2025 14:46:46 Europe/Berlin] PHP Warning:  Undefined variable $lastUpdated in C:\xampp\htdocs\fatima\admin\add-product.php on line 72
+[18-Apr-2025 14:46:46 Europe/Berlin] PHP Warning:  Undefined variable $image in C:\xampp\htdocs\fatima\admin\add-product.php on line 72
+[18-Apr-2025 14:46:46 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'subcategory' in 'field list' in C:\xampp\htdocs\fatima\admin\add-product.php:74
+Stack trace:
+#0 C:\xampp\htdocs\fatima\admin\add-product.php(74): mysqli_query(Object(mysqli), 'INSERT INTO bed...')
+#1 {main}
+  thrown in C:\xampp\htdocs\fatima\admin\add-product.php on line 74

@@ -1,0 +1,147 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    padding-top: 80px;
+}
+
+
+
+ /* Elegant Full-Width Bedroom Furniture Showcase Styles */
+
+/* Base container styling */
+.bedroom-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #333;
+  }
+  
+  /* Main heading style */
+  .bedroom-container h2 {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    margin-bottom: 40px;
+    position: relative;
+    color: #2c3e50;
+  }
+  
+  /* Decorative underline for heading */
+  .bedroom-container h2:after {
+    content: "";
+    position: absolute;
+    width: 80px;
+    height: 2px;
+    background-color: #c0a080;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -12px;
+  }
+  
+  /* Container for all bedroom items */
+  .bedroom-items {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 30px;
+  }
+  
+  /* Individual item styling - now full width */
+  .bedroom-item {
+    display: flex;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+  }
+  
+  .bedroom-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Image styling - 80% width */
+  .bedroom-item img {
+    width: 80%;
+    height: 500px;
+    object-fit: cover;
+  }
+  
+  /* Content container - 20% width */
+  .bedroom-content {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  /* Item title */
+  .bedroom-item h3 {
+    font-size: 22px;
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    font-weight: 600;
+  }
+  
+  /* Item description */
+  .bedroom-item p {
+    margin: 0 0 20px 0;
+    color: #7f8c8d;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    line-height: 1.5;
+    flex-grow: 1;
+  }
+  
+  /* Button styling */
+  .view-details {
+    background-color: transparent;
+    color: #c0a080;
+    border: 1px solid #c0a080;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Cormorant Garamond', serif;
+    text-transform: uppercase;
+    align-self: flex-start;
+    margin-top: auto;
+  }
+  
+  .view-details:hover {
+    background-color: #c0a080;
+    color: white;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .bedroom-item {
+      flex-direction: column;
+    }
+    
+    .bedroom-item img {
+      width: 100%;
+      height: 250px;
+    }
+    
+    .bedroom-content {
+      width: 100%;
+      padding: 15px;
+    }
+    
+    .bedroom-container h2 {
+      font-size: 28px;
+    }
+  }
+  
+  /* Optional font imports */
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Cormorant+Garamond:wght@400;600&display=swap');
+
+ 
