@@ -231,6 +231,18 @@ if (isset($_GET['get_order_details']) && isset($_GET['order_id'])) {
             margin-top: 80px;
             padding: 20px;
         }
+.products-details{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.products-details img{
+    width: 200%;
+    height: 80%;
+}
 
         .card {
             background: var(--white);
@@ -808,9 +820,16 @@ if (isset($_GET['get_order_details']) && isset($_GET['order_id'])) {
         .then(response => response.json())
         .then(data => {
             let order = data.order;
+            let items = data.items;
+
             let modalContent = `
-                <div class="order-info-grid">
-                    <div class="order-detail">
+ 
+ 
+                <div class="order-detail">
+                               <div class="order-info-grid">
+<div class="products-details">                            <img src="/fatima/${items[0].image = items[0].image.replace(/^\./, '')}" alt="QR Code" class="qr-code">
+<span class="tracking-number"></i> ${items[0].product_name || 'N/A'}</span>
+</div>
                         <h3><i class="fas fa-info-circle"></i> Order Information</h3>
                         <div class="detail-row">
                             <div class="detail-label">Order ID:</div>
@@ -822,7 +841,8 @@ if (isset($_GET['get_order_details']) && isset($_GET['order_id'])) {
                         </div>
                         <div class="detail-row">
                             <div class="detail-label">Status:</div>
-                            <div class="detail-value">${order.order_status}</div>
+                            
+                                                       <div class="detail-value">${order.order_status}</div>
                         </div>
                         <div class="detail-row">
                             <div class="detail-label">Total Amount:</div>
@@ -950,6 +970,7 @@ document.getElementById('printSection').innerHTML = `
                     ${data.items.map(item => `
                         <tr>
                             <td style="border: 1px solid #ddd; padding: 8px;">${item.product_name}</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">${item.image}</td>
                             <td style="border: 1px solid #ddd; padding: 8px;">$${parseFloat(item.price).toFixed(2)}</td>
                             <td style="border: 1px solid #ddd; padding: 8px;">${item.quantity}</td>
                             <td style="border: 1px solid #ddd; padding: 8px;">$${(parseFloat(item.price) * parseInt(item.quantity)).toFixed(2)}</td>
