@@ -559,7 +559,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                                 </div>
                                 <div>
                                     <div><?php echo htmlspecialchars($item['name']); ?></div>
-                                    <div>$<?php echo number_format($item['price'], 2); ?> x <?php echo $item['quantity']; ?>
+                                    <div>₱<?php echo number_format($item['price'], 2); ?> x <?php echo $item['quantity']; ?>
                                     </div>
                                 </div>
                             </div>
@@ -588,7 +588,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                                     </form>
                                 </div>
                                 <div class="item-total">
-                                    <strong>$<?php echo number_format($item_total, 2); ?></strong>
+                                    <strong>₱<?php echo number_format($item_total, 2); ?></strong>
                                 </div>
                             </div>
                         </div>
@@ -596,7 +596,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 </div>
 
                 <div class="cart-total">
-                    Total: $<?php echo number_format($total, 2); ?>
+                    Total: ₱<?php echo number_format($total, 2); ?>
                 </div>
 
                 <div class="cart-actions">

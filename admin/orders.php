@@ -970,10 +970,9 @@ document.getElementById('printSection').innerHTML = `
                     ${data.items.map(item => `
                         <tr>
                             <td style="border: 1px solid #ddd; padding: 8px;">${item.product_name}</td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">${item.image}</td>
                             <td style="border: 1px solid #ddd; padding: 8px;">$${parseFloat(item.price).toFixed(2)}</td>
                             <td style="border: 1px solid #ddd; padding: 8px;">${item.quantity}</td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">$${(parseFloat(item.price) * parseInt(item.quantity)).toFixed(2)}</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">₱${(parseFloat(item.price) * parseInt(item.quantity)).toFixed(2)}</td>
                         </tr>
                     `).join('')}
                 </tbody>
