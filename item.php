@@ -66,7 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
             'name' => $product['name'],
             'price' => $product['price'],
             'quantity' => $quantity,
-            'image' => $product['image']
+            'image' => $product['image'],
+            'category' => $product['category'],
+            'subCategory' => $product['subCategory'],
         ];
     }
 

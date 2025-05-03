@@ -12,8 +12,8 @@ $password = "";
 $dbname = "fatima_db";
 // Email configuration
 $smtp_host = "smtp.gmail.com";
-$smtp_username = "fatimahomeworldcenter52@gmail.com";
-$smtp_password = "jajj nyfd yygj jjwr";
+$smtp_username = "fatimahomes123@gmail.com";
+$smtp_password = "tirp jvsu rmtb ebhr";
 $smtp_port = 587;
 $smtp_from_email = "noreply@gmail.com";
 $smtp_from_name = "FATIMA HOME WORLD CENTER";
