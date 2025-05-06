@@ -42,68 +42,141 @@ $email = $_SESSION['email'] ?? '';
 // Connect to database
 $connection = connectDB();
 
-// Function to get all orders for the current user
-function getUserOrders()
+// Get the selected filter from the request
+$statusFilter = $_GET['status'] ?? 'all';
+
+// Function to get filtered orders for the current user
+function getUserOrders($email, $statusFilter)
 {
-    global $connection, $email;
+    global $connection;
 
     if (empty($email)) {
         return [];
     }
 
-    // Use prepared statement to prevent SQL injection
-    $sql = "SELECT o.*, CONCAT(s.firstname, ' ', s.lastname) AS customer_name,
-                  s.address, s.city, s.state, s.zip, s.phone, s.email
-           FROM orders o 
-           LEFT JOIN shipping s ON o.order_id = s.order_id 
-           WHERE s.email = ?
-           ORDER BY o.order_date DESC";
+    // Use a different approach - first get all order IDs that belong to this user
+    $sql = "SELECT DISTINCT o.order_id 
+            FROM orders o 
+            INNER JOIN shipping s ON o.order_id = s.order_id 
+            WHERE s.email = ?";
+    
+    // Add status filter if not 'all'
+    if ($statusFilter !== 'all') {
+        $sql .= " AND o.order_status = ?";
+    }
 
     // Prepare the statement
     $stmt = mysqli_prepare($connection, $sql);
     if (!$stmt) {
+        error_log("MySQL Error: " . mysqli_error($connection));
         return [];
     }
 
-    // Bind parameters and execute
-    mysqli_stmt_bind_param($stmt, "s", $email);
-    mysqli_stmt_execute($stmt);
+    // Bind parameters based on filter
+    if ($statusFilter !== 'all') {
+        mysqli_stmt_bind_param($stmt, "ss", $email, $statusFilter);
+    } else {
+        mysqli_stmt_bind_param($stmt, "s", $email);
+    }
 
-    // Get results
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    
+    $orderIds = [];
+    if ($result && mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $orderIds[] = $row['order_id'];
+        }
+    }
+    mysqli_stmt_close($stmt);
+    
+    // If no orders found, return empty
+    if (empty($orderIds)) {
+        return [];
+    }
+    
+    // Now get full order details for these IDs
+    $placeholders = implode(',', array_fill(0, count($orderIds), '?'));
+    $sql = "SELECT o.*, CONCAT(s.firstname, ' ', s.lastname) AS customer_name,
+                  s.address, s.city, s.state, s.zip, s.phone, s.email
+           FROM orders o 
+           INNER JOIN shipping s ON o.order_id = s.order_id 
+           WHERE o.order_id IN ($placeholders) AND s.email = ?
+           ORDER BY o.order_date DESC";
+
+    $stmt = mysqli_prepare($connection, $sql);
+    if (!$stmt) {
+        error_log("MySQL Error: " . mysqli_error($connection));
+        return [];
+    }
+    
+    // Create types string (all 'i' for order_ids plus 's' for email)
+    $types = str_repeat('i', count($orderIds)) . 's';
+    
+    // Create array of parameters
+    $params = array_merge($orderIds, [$email]);
+    
+    // Use reflection to bind the array of parameters
+    $bind_names[] = $types;
+    for ($i = 0; $i < count($params); $i++) {
+        $bind_name = 'bind' . $i;
+        $$bind_name = $params[$i];
+        $bind_names[] = &$$bind_name;
+    }
+    
+    call_user_func_array(array($stmt, 'bind_param'), $bind_names);
+    mysqli_stmt_execute($stmt);
+    
     $result = mysqli_stmt_get_result($stmt);
     $orders = [];
 
     if ($result && mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-        $orders[] = $row;
+        while ($row = mysqli_fetch_assoc($result)) {
+            $orders[] = $row;
+        }
     }
 
     mysqli_stmt_close($stmt);
     return $orders;
 }
 
-// Function to get order items with statuses
-function getOrderItems($orderId)
+// Function to get order items with statuses, ensuring they belong to the order
+function getOrderItems($orderId, $statusFilter)
 {
     global $connection;
-
+    
     if (empty($orderId)) {
         return [];
     }
 
-    $sql = "SELECT oi.*, oi.product_name, p.order_status, oi.image AS product_image
+    // Base query - ensure we're only getting items for this specific order_id
+    $sql = "SELECT oi.*, p.order_status, oi.image AS product_image
             FROM order_items oi
-            LEFT JOIN orders p ON oi.order_id = p.order_id
+            INNER JOIN orders p ON oi.order_id = p.order_id
             WHERE oi.order_id = ?";
 
+    // Add status filter if not 'all'
+    if ($statusFilter !== 'all') {
+        $sql .= " AND p.order_status = ?";
+    }
+
+    // Prepare the statement
     $stmt = mysqli_prepare($connection, $sql);
     if (!$stmt) {
+        error_log("MySQL Error: " . mysqli_error($connection));
         return [];
     }
 
-    mysqli_stmt_bind_param($stmt, "i", $orderId);
+    // Bind parameters
+    if ($statusFilter !== 'all') {
+        mysqli_stmt_bind_param($stmt, "is", $orderId, $statusFilter);
+    } else {
+        mysqli_stmt_bind_param($stmt, "i", $orderId);
+    }
+
     mysqli_stmt_execute($stmt);
 
+    // Get results
     $result = mysqli_stmt_get_result($stmt);
     $items = [];
 
@@ -117,10 +190,11 @@ function getOrderItems($orderId)
     return $items;
 }
 
-// Function to get order status badgee
+// Function to get order status badge
 function getOrderStatusBadge($status)
 {
-    $status = strtolower($status ?? 'pending');
+    $status = strtolower(trim($status ?? 'pending'));
+    
     switch ($status) {
         case 'completed':
         case 'delivered':
@@ -128,14 +202,14 @@ function getOrderStatusBadge($status)
         case 'to ship':
             return ['To Ship', 'available'];
         case 'processing':
-            return ['Processing', 'low-stock'];
+        case 'pending':
+            return ['Pending', 'low-stock'];
         case 'shipped':
             return ['Shipped', 'backorder'];
         case 'cancelled':
             return ['Cancelled', 'out-of-stock'];
         case 'out for delivery':
             return ['Out for Delivery', 'out-for-delivery'];
-
         default:
             return ['Pending', 'unknown'];
     }
@@ -156,9 +230,8 @@ function formatPrice($price)
     return '₱' . number_format(floatval($price ?? 0), 2);
 }
 
-// Get all orders for the current user
-$userOrders = getUserOrders();
-
+// Get filtered orders for the current user
+$userOrders = getUserOrders($email, $statusFilter);
 ?>
 
 <!DOCTYPE html>
@@ -169,451 +242,7 @@ $userOrders = getUserOrders();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Orders - FATIMA HOME WORLD CENTER</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #4a90e2;
-            --primary-dark: #357bd8;
-            --available-color: #43a047;
-            --low-stock-color: #ffb300;
-            --out-of-stock-color: #e53935;
-            --backorder-color: #8e24aa;
-            --discontinued-color: #757575;
-            --light-gray: #f5f5f5;
-            --medium-gray: #e0e0e0;
-            --dark-gray: #757575;
-            --text-color: #333;
-            --border-radius: 10px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: var(--light-gray);
-            color: var(--text-color);
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        header h1 {
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
-
-        header p {
-            color: var(--dark-gray);
-        }
-
-        .my-orders-container {
-            margin-bottom: 40px;
-        }
-
-        .my-orders-container h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: var(--primary-color);
-        }
-
-        .no-orders {
-            background-color: white;
-            padding: 50px;
-            border-radius: var(--border-radius);
-            text-align: center;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .no-orders i {
-            font-size: 48px;
-            color: var(--medium-gray);
-            margin-bottom: 20px;
-        }
-
-        .no-orders h3 {
-            margin-bottom: 10px;
-            color: var(--text-color);
-        }
-
-        .no-orders p {
-            color: var(--dark-gray);
-            margin-bottom: 20px;
-        }
-
-        .no-orders .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: var(--primary-color);
-            color: white;
-            text-decoration: none;
-            border-radius: var(--border-radius);
-            transition: background-color 0.3s;
-        }
-
-        .no-orders .btn:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .order-card {
-            background-color: white;
-            border-radius: var(--border-radius);
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            overflow: hidden;
-        }
-
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-bottom: 1px solid var(--medium-gray);
-        }
-
-        .order-header-left h3 {
-            margin: 0 0 10px 0;
-            color: var(--primary-color);
-        }
-
-        .tracking-number,
-        .order-date {
-            font-size: 14px;
-            color: var(--dark-gray);
-            margin-bottom: 5px;
-        }
-
-        .order-header-right {
-            text-align: right;
-        }
-
-        .order-status {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-
-        .order-status.completed,
-        .order-status.delivered {
-            background-color: var(--available-color);
-            color: white;
-        }
-
-        .order-status.processing {
-            background-color: var(--low-stock-color);
-            color: white;
-        }
-
-        .order-status.shipped {
-            background-color: var(--backorder-color);
-            color: white;
-        }
-        .out-for-delivery {
-            background-color: var(--available-color);
-            color: white;
-        }
-
-        .order-status.cancelled {
-            background-color: var(--out-of-stock-color);
-            color: white;
-        }
-
-        .order-status.pending {
-            background-color: var(--dark-gray);
-            color: white;
-        }
-
-        .order-total {
-            font-weight: bold;
-            font-size: 16px;
-            color: var(--text-color);
-        }
-
-        .order-items {
-            padding: 20px;
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .product-card {
-            background-color: white;
-            border: 1px solid var(--medium-gray);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .product-image-container {
-            height: 180px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .product-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-
-        .product-card:hover .product-image {
-            transform: scale(1.05);
-        }
-
-        .product-status-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            text-transform: uppercase;
-            z-index: 2;
-        }
-
-        .product-status-badge.available {
-            background-color: var(--available-color);
-            color: white;
-        }
-
-        .product-status-badge.low-stock {
-            background-color: var(--low-stock-color);
-            color: white;
-        }
-
-        .product-status-badge.out-of-stock {
-            background-color: var(--out-of-stock-color);
-            color: white;
-        }
-
-        .product-status-badge.backorder {
-            background-color: var(--backorder-color);
-            color: white;
-        }
-
-        .product-status-badge.unknown {
-            background-color: var(--dark-gray);
-            color: white;
-        }
-
-        .product-details {
-            padding: 15px;
-        }
-
-        .product-name {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: var(--text-color);
-        }
-
-        .product-code {
-            font-size: 12px;
-            color: var(--dark-gray);
-            margin-bottom: 8px;
-        }
-
-        .product-price {
-            font-size: 16px;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 12px;
-        }
-
-        .product-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            color: var(--dark-gray);
-            padding-top: 10px;
-            border-top: 1px solid var(--medium-gray);
-        }
-
-        .no-products {
-            text-align: center;
-            padding: 30px 0;
-            color: var(--dark-gray);
-        }
-
-        .order-footer {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-top: 1px solid var(--medium-gray);
-        }
-
-        .shipping-info {
-            width: 48%;
-        }
-
-        .shipping-info h4 {
-            margin-bottom: 10px;
-            color: var(--text-color);
-        }
-
-        .shipping-info p {
-            margin: 0 0 5px 0;
-            color: var(--dark-gray);
-            font-size: 14px;
-        }
-
-        .order-totals {
-            width: 48%;
-            text-align: right;
-        }
-
-        .totals-table {
-            width: 100%;
-            margin-left: auto;
-        }
-
-        .totals-table td {
-            padding: 8px 0;
-        }
-
-        .totals-table td:last-child {
-            text-align: right;
-            font-weight: bold;
-        }
-
-        .totals-table tr.grand-total {
-            font-size: 18px;
-            color: var(--primary-color);
-        }
-
-        .totals-table tr.grand-total td {
-            padding-top: 12px;
-            border-top: 2px solid var(--medium-gray);
-        }
-
-        .help-section {
-            text-align: center;
-            margin: 40px 0;
-        }
-
-        .help-section h3 {
-            margin-bottom: 15px;
-            color: var(--primary-color);
-        }
-
-        .help-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .help-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px 25px;
-            background-color: white;
-            border: 1px solid var(--medium-gray);
-            border-radius: var(--border-radius);
-            text-decoration: none;
-            color: var(--text-color);
-            transition: all 0.3s;
-        }
-
-        .help-button:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .help-button i {
-            margin-right: 10px;
-            color: var(--primary-color);
-            font-size: 20px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            background-color: white;
-            margin-top: 40px;
-            border-top: 1px solid var(--medium-gray);
-        }
-
-        footer p {
-            color: var(--dark-gray);
-            margin-bottom: 10px;
-        }
-
-        .social-icons {
-            margin-top: 20px;
-        }
-
-        .social-icons a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: var(--light-gray);
-            border-radius: 50%;
-            margin: 0 5px;
-            color: var(--dark-gray);
-            transition: all 0.3s;
-        }
-
-        .social-icons a:hover {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        @media (max-width: 768px) {
-
-            .order-header,
-            .order-footer {
-                flex-direction: column;
-            }
-
-            .order-header-right {
-                text-align: left;
-                margin-top: 15px;
-            }
-
-            .order-footer .shipping-info,
-            .order-footer .order-totals {
-                width: 100%;
-            }
-
-            .order-footer .order-totals {
-                margin-top: 20px;
-            }
-
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="track.css">
 </head>
 
 <body>
@@ -626,6 +255,28 @@ $userOrders = getUserOrders();
         <div class="my-orders-container">
             <h2>My Order History</h2>
 
+            <!-- Status Filters -->
+            <div class="status-filters">
+                <a href="?status=all" class="status-filter <?php echo $statusFilter === 'all' ? 'active' : ''; ?>">
+                    All Orders
+                </a>
+                <a href="?status=" class="status-filter <?php echo $statusFilter === 'pending' ? 'active' : ''; ?>">
+                    Pending
+                </a>
+                <a href="?status=to ship" class="status-filter <?php echo $statusFilter === 'to ship' ? 'active' : ''; ?>">
+                    To Ship
+                </a>
+                <a href="?status=shipped" class="status-filter <?php echo $statusFilter === 'shipped' ? 'active' : ''; ?>">
+                    Shipped
+                </a>
+                <a href="?status=out for delivery" class="status-filter <?php echo $statusFilter === 'out for delivery' ? 'active' : ''; ?>">
+                    Out for Delivery
+                </a>
+                <a href="?status=delivered" class="status-filter <?php echo $statusFilter === 'delivered' ? 'active' : ''; ?>">
+                    Delivered
+                </a>
+            </div>
+
             <?php if (empty($userOrders)): ?>
                 <div class="no-orders">
                     <i class="fas fa-shopping-basket"></i>
@@ -635,80 +286,138 @@ $userOrders = getUserOrders();
                 </div>
             <?php else: ?>
                 <?php foreach ($userOrders as $order): ?>
-                    <?php $orderItems = getOrderItems($order['order_id']); ?>
-
+                    <?php 
+                    // Get order items with the same status filter
+                    $orderItems = getOrderItems($order['order_id'], $statusFilter); 
+                    
+                    // Skip empty orders (when filtered)
+                    if (empty($orderItems) && $statusFilter !== 'all') {
+                        continue;
+                    }
+                    ?>
                     <div class="order-card">
-                    </div>
-
-                    <div class="order-items">
-                        <?php if (!empty($orderItems)): ?>
-                            <div class="products-grid">
-                                <?php foreach ($orderItems as $item):
-                                    $statusInfo = getOrderStatusBadge($item['order_status'] ?? $order['order_status']);
+                        <div class="order-header">
+                            <div class="order-header-left">
+                                <h3>Order #<?php echo htmlspecialchars($order['order_id']); ?></h3>
+                                <p class="tracking-number">Tracking #: <?php echo htmlspecialchars($order['tracking_number'] ?? 'Not available'); ?></p>
+                                <p class="order-date">Order Date: <?php echo formatDate($order['order_date']); ?></p>
+                            </div>
+                            <div class="order-header-right">
+                                <span class="order-status <?php echo strtolower(str_replace(' ', '-', $order['order_status'])); ?>">
+                                    <?php echo htmlspecialchars(ucwords($order['order_status'])); ?>
+                                </span>
+                                <p class="order-total">Total: <?php echo formatPrice($order['total_amount']); ?></p>
+                            </div>
+                        </div>
+                        
+                        <div class="order-items">
+                            <?php if (!empty($orderItems)): ?>
+                                <div class="products-grid">
+                                    <?php foreach ($orderItems as $item): 
+                                        // Calculate tax properly - 8% of price * quantity
+                                        $tax = $item['price'] * 0.08 * $item['quantity'];
+                                        
+                                        // Set fixed shipping cost per item
+                                        $shipping = 10;
+                                        
+                                        // Calculate total with tax and shipping
+                                        $total = ($item['price'] * $item['quantity']) + $tax + $shipping;
                                     ?>
-                                    <div class="product-card">
-                                        <div class="product-image-container">
-                                            <?php if (!empty($item['product_image'])): ?>
-                                                <img src="<?php echo htmlspecialchars($item['product_image']); ?>"
-                                                    alt="<?php echo htmlspecialchars($item['product_name'] ?? 'Product'); ?>"
+                                        <div class="product-card">
+                                            <div class="product-image-container">
+                                                <img src="<?php echo htmlspecialchars($item['product_image']); ?>" 
+                                                    alt="<?php echo htmlspecialchars($item['product_name']); ?>" 
                                                     class="product-image">
-                                            <?php else: ?>
-                                                <img src="./assets/images/product-placeholder.jpg" alt="Product image placeholder"
-                                                    class="product-image">
-                                            <?php endif; ?>
-                                            <div class="product-status-badge <?php echo $statusInfo[1]; ?>">
-                                                <?php echo $statusInfo[0]; ?>
+                                                <span class="product-status-badge <?php echo htmlspecialchars(getOrderStatusBadge($item['order_status'])[1]); ?>">
+                                                    <?php echo htmlspecialchars(getOrderStatusBadge($item['order_status'])[0]); ?>
+                                                </span>
                                             </div>
-                                        </div>
-                                        <div class="product-details">
-                                            <h4 class="product-name">
-                                                <?php echo htmlspecialchars($item['product_name'] ?? 'Unknown Product'); ?>
-                                            </h4>
-                                            <div class="product-code">Product Code:
-                                                <?php echo htmlspecialchars($item['product_id'] ?? 'N/A'); ?>
-                                            </div>
-                                            <div class="product-price"><?php echo formatPrice($item['price'] ?? 0); ?></div>
-                                            <div class="product-meta">
-                                                <div class="product-quantity">Qty: <?php echo $item['quantity'] ?? 0; ?></div>
-                                                <div class="product-subtotal">
-                                                    <?php echo formatPrice(($item['quantity'] ?? 0) * ($item['price'] ?? 0)); ?>
+                                            <div class="product-details">
+                                                <h4 class="product-name"><?php echo htmlspecialchars($item['product_name']); ?></h4>
+                                                <p class="product-code">Product Code: <?php echo htmlspecialchars($item['order_id']); ?></p>
+                                                <p class="product-price"><?php echo formatPrice($item['price']); ?></p>
+                                                <div class="product-meta">
+                                                    <span>Qty: <?php echo htmlspecialchars($item['quantity']); ?></span>
+                                                    <span><?php echo formatDate($order['order_date']); ?></span>
+                                                </div>
+                                                <!-- Added tax, shipping, and total information -->
+                                                <div class="product-cost-breakdown">
+                                                    <div class="cost-row">
+                                                        <span class="cost-label">Tax (8%):</span>
+                                                        <span class="cost-value"><?php echo formatPrice($tax); ?></span>
+                                                    </div>
+                                                    <div class="cost-row">
+                                                        <span class="cost-label">Shipping:</span>
+                                                        <span class="cost-value"><?php echo formatPrice($shipping); ?></span>
+                                                    </div>
+                                                    <div class="cost-row total">
+                                                        <span class="cost-label">Total:</span>
+                                                        <span class="cost-value"><?php echo formatPrice($total); ?></span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                <?php endforeach; ?>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else: ?>
+                                <div class="no-products">
+                                    <i class="fas fa-shopping-basket"
+                                        style="font-size: 48px; color: var(--medium-gray); margin-bottom: 20px;"></i>
+                                    <h3>No products found in this order</h3>
+                                    <p>This order doesn't have any products associated with it.</p>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        
+                        <div class="order-footer">
+                            <div class="shipping-info">
+                                <h4>Shipping Information</h4>
+                                <p><?php echo htmlspecialchars($order['customer_name']); ?></p>
+                                <p><?php echo htmlspecialchars($order['address']); ?></p>
+                                <p><?php echo htmlspecialchars($order['city'] . ', ' . $order['state'] . ' ' . $order['zip']); ?></p>
+                                <p>Phone: <?php echo htmlspecialchars($order['phone']); ?></p>
+                                <p>Email: <?php echo htmlspecialchars($order['email']); ?></p>
                             </div>
-                        <?php else: ?>
-                            <div class="no-products">
-                                <i class="fas fa-shopping-basket"
-                                    style="font-size: 48px; color: var(--medium-gray); margin-bottom: 20px;"></i>
-                                <h3>No products found in this order</h3>
-                                <p>This order doesn't have any products associated with it.</p>
+                            <div class="order-totals">
+                                <table class="totals-table">
+                                    <tr>
+                                        <td>Subtotal:</td>
+                                        <td><?php echo formatPrice($order['total_amount'] - ($order['total_amount'] * 0.08)); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tax (8%):</td>
+                                        <td><?php echo formatPrice($order['total_amount'] * 0.08); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Shipping:</td>
+                                        <td><?php echo formatPrice(count($orderItems) * 10); ?></td>
+                                    </tr>
+                                    <tr class="grand-total">
+                                        <td>Total:</td>
+                                        <td><?php echo formatPrice($order['total_amount'] + (count($orderItems) * 10)); ?></td>
+                                    </tr>
+                                </table>
                             </div>
-                        <?php endif; ?>
+                        </div>
                     </div>
-
-
-                </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
-
-    <div class="help-section">
-        <h3>Need Help?</h3>
-        <div class="help-buttons">
-            <a href="contact.php" class="help-button">
-                <i class="fas fa-envelope"></i> Contact Support
-            </a>
-            <a href="faq.php" class="help-button">
-                <i class="fas fa-question-circle"></i> FAQ
-            </a>
-            <a href="tel:+639123456789" class="help-button">
-                <i class="fas fa-phone"></i> Call Us
-            </a>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
-    </div>
+
+        <div class="help-section">
+            <h3>Need Help?</h3>
+            <div class="help-buttons">
+                <a href="contact.php" class="help-button">
+                    <i class="fas fa-envelope"></i> Contact Support
+                </a>
+                <a href="faq.php" class="help-button">
+                    <i class="fas fa-question-circle"></i> FAQ
+                </a>
+                <a href="tel:+639123456789" class="help-button">
+                    <i class="fas fa-phone"></i> Call Us
+                </a>
+            </div>
+        </div>
     </div>
 
     <footer>

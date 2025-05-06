@@ -845,6 +845,10 @@ if (isset($_GET['get_order_details']) && isset($_GET['order_id'])) {
                                                        <div class="detail-value">${order.order_status}</div>
                         </div>
                         <div class="detail-row">
+                            <div class="detail-label">Quantity:</div>
+                            <div class="detail-value">${items[0].quantity}</div>
+                        </div>
+                        <div class="detail-row">
                             <div class="detail-label">Total Amount:</div>
                             <div class="detail-value">₱${parseFloat(order.total_amount).toFixed(2)}</div>
                         </div>

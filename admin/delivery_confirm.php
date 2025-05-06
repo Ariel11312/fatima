@@ -25,16 +25,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id'])) {
         echo $resultMessage['product_id'] . " - " . $resultMessage['product_name'] . " - " . $resultMessage['category'] . "<br>";
         $categoryItem = $resultMessage['category'];
         $quantityItem = $resultMessage['quantity'];
-        $sql = "UPDATE $categoryItem SET quantity = quantity - '$quantityItem'  WHERE id = '$resultMessage[product_id]'";
-        $quantityItem = mysqli_query($connection, $sql);
-        if ($quantityItem) {
+        echo $quantityItem . "<br>";
+        
+        $sql = "UPDATE $categoryItem SET quantity = quantity - '$quantityItem' WHERE id = '$resultMessage[product_id]'";
+        
+        // Execute ONCE and store the result
+        $queryResult = mysqli_query($connection, $sql);
+        
+        if ($queryResult) {
             $resultMessage = 'Product quantity updated successfully.';
             $resultClass = 'success-message';
         } else {
-            $resultMessage = 'Error updating product quantity: ' . mysqli_error($connection);
-            $resultClass = 'error-message';
-        }
-        if (!mysqli_query($connection, $sql)) {
             $resultMessage = 'Error updating product quantity: ' . mysqli_error($connection);
             $resultClass = 'error-message';
         }
