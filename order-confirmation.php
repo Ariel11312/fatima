@@ -293,13 +293,13 @@ $order = $_SESSION['order_confirmation'];
                         <div class="item-info">
                             <div class="item-name"><?php echo htmlspecialchars($item['name']); ?></div>
                             <div class="item-price">
-                                $<?php echo number_format($item['price'], 2); ?>
+                            ₱<?php echo number_format($item['price'], 2); ?>
                                 <span class="item-quantity">x<?php echo $item['quantity']; ?></span>
                             </div>
                         </div>
                     </div>
                     <div>
-                        $<?php echo number_format($item_total, 2); ?>
+                    ₱<?php echo number_format($item_total, 2); ?>
                     </div>
                 </div>
                 <?php 
@@ -309,7 +309,7 @@ $order = $_SESSION['order_confirmation'];
             </div>
             
             <div class="order-total">
-                Total: $<?php echo number_format($order['total'] ?? $total, 2); ?>
+                Total: ₱<?php echo number_format($order['total'] ?? $total, 2); ?>
             </div>
         </div>
         

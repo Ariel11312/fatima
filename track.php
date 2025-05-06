@@ -1,435 +1,287 @@
 <?php
 session_start();
-error_reporting(E_ALL); // Change to 0 in production
+error_reporting(E_ALL);
 include_once("./admin/database/connection.php");
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "fatima_db";
-
-// Connect to database
-function connectDB()
-{
-    global $servername, $username, $password, $dbname;
-    $connection = mysqli_connect($servername, $username, $password, $dbname);
-
-    if (!$connection) {
-        die("Connection failed: " . mysqli_connect_error());
-    }
-
-    return $connection;
-}
-
-// Function to sanitize input
-function sanitize($data)
-{
-    global $connection;
-    return mysqli_real_escape_string($connection, trim($data));
-}
-
-// Check if user is logged in
 if (!isset($_SESSION['email'])) {
-    // Redirect to login page if not logged in
-    header("Location: login.php");
-    exit;
+    die("Please login to view your orders.");
 }
 
 $firstname = $_SESSION['firstname'] ?? '';
 $lastname = $_SESSION['lastname'] ?? '';
 $email = $_SESSION['email'] ?? '';
-
-// Connect to database
-$connection = connectDB();
-
-// Get the selected filter from the request
-$statusFilter = $_GET['status'] ?? 'all';
-
-// Function to get filtered orders for the current user
-function getUserOrders($email, $statusFilter)
-{
-    global $connection;
-
-    if (empty($email)) {
-        return [];
-    }
-
-    // Use a different approach - first get all order IDs that belong to this user
-    $sql = "SELECT DISTINCT o.order_id 
-            FROM orders o 
-            INNER JOIN shipping s ON o.order_id = s.order_id 
-            WHERE s.email = ?";
-    
-    // Add status filter if not 'all'
-    if ($statusFilter !== 'all') {
-        $sql .= " AND o.order_status = ?";
-    }
-
-    // Prepare the statement
-    $stmt = mysqli_prepare($connection, $sql);
-    if (!$stmt) {
-        error_log("MySQL Error: " . mysqli_error($connection));
-        return [];
-    }
-
-    // Bind parameters based on filter
-    if ($statusFilter !== 'all') {
-        mysqli_stmt_bind_param($stmt, "ss", $email, $statusFilter);
-    } else {
-        mysqli_stmt_bind_param($stmt, "s", $email);
-    }
-
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    
-    $orderIds = [];
-    if ($result && mysqli_num_rows($result) > 0) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            $orderIds[] = $row['order_id'];
-        }
-    }
-    mysqli_stmt_close($stmt);
-    
-    // If no orders found, return empty
-    if (empty($orderIds)) {
-        return [];
-    }
-    
-    // Now get full order details for these IDs
-    $placeholders = implode(',', array_fill(0, count($orderIds), '?'));
-    $sql = "SELECT o.*, CONCAT(s.firstname, ' ', s.lastname) AS customer_name,
-                  s.address, s.city, s.state, s.zip, s.phone, s.email
-           FROM orders o 
-           INNER JOIN shipping s ON o.order_id = s.order_id 
-           WHERE o.order_id IN ($placeholders) AND s.email = ?
-           ORDER BY o.order_date DESC";
-
-    $stmt = mysqli_prepare($connection, $sql);
-    if (!$stmt) {
-        error_log("MySQL Error: " . mysqli_error($connection));
-        return [];
-    }
-    
-    // Create types string (all 'i' for order_ids plus 's' for email)
-    $types = str_repeat('i', count($orderIds)) . 's';
-    
-    // Create array of parameters
-    $params = array_merge($orderIds, [$email]);
-    
-    // Use reflection to bind the array of parameters
-    $bind_names[] = $types;
-    for ($i = 0; $i < count($params); $i++) {
-        $bind_name = 'bind' . $i;
-        $$bind_name = $params[$i];
-        $bind_names[] = &$$bind_name;
-    }
-    
-    call_user_func_array(array($stmt, 'bind_param'), $bind_names);
-    mysqli_stmt_execute($stmt);
-    
-    $result = mysqli_stmt_get_result($stmt);
-    $orders = [];
-
-    if ($result && mysqli_num_rows($result) > 0) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            $orders[] = $row;
-        }
-    }
-
-    mysqli_stmt_close($stmt);
-    return $orders;
-}
-
-// Function to get order items with statuses, ensuring they belong to the order
-function getOrderItems($orderId, $statusFilter)
-{
-    global $connection;
-    
-    if (empty($orderId)) {
-        return [];
-    }
-
-    // Base query - ensure we're only getting items for this specific order_id
-    $sql = "SELECT oi.*, p.order_status, oi.image AS product_image
-            FROM order_items oi
-            INNER JOIN orders p ON oi.order_id = p.order_id
-            WHERE oi.order_id = ?";
-
-    // Add status filter if not 'all'
-    if ($statusFilter !== 'all') {
-        $sql .= " AND p.order_status = ?";
-    }
-
-    // Prepare the statement
-    $stmt = mysqli_prepare($connection, $sql);
-    if (!$stmt) {
-        error_log("MySQL Error: " . mysqli_error($connection));
-        return [];
-    }
-
-    // Bind parameters
-    if ($statusFilter !== 'all') {
-        mysqli_stmt_bind_param($stmt, "is", $orderId, $statusFilter);
-    } else {
-        mysqli_stmt_bind_param($stmt, "i", $orderId);
-    }
-
-    mysqli_stmt_execute($stmt);
-
-    // Get results
-    $result = mysqli_stmt_get_result($stmt);
-    $items = [];
-
-    if ($result && mysqli_num_rows($result) > 0) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            $items[] = $row;
-        }
-    }
-
-    mysqli_stmt_close($stmt);
-    return $items;
-}
-
-// Function to get order status badge
-function getOrderStatusBadge($status)
-{
-    $status = strtolower(trim($status ?? 'pending'));
-    
-    switch ($status) {
-        case 'completed':
-        case 'delivered':
-            return ['Delivered', 'available'];
-        case 'to ship':
-            return ['To Ship', 'available'];
-        case 'processing':
-        case 'pending':
-            return ['Pending', 'low-stock'];
-        case 'shipped':
-            return ['Shipped', 'backorder'];
-        case 'cancelled':
-            return ['Cancelled', 'out-of-stock'];
-        case 'out for delivery':
-            return ['Out for Delivery', 'out-for-delivery'];
-        default:
-            return ['Pending', 'unknown'];
-    }
-}
-
-// Format date properly
-function formatDate($date)
-{
-    if (empty($date)) {
-        return 'N/A';
-    }
-    return date('F j, Y, g:i a', strtotime($date));
-}
-
-// Format price
-function formatPrice($price)
-{
-    return '₱' . number_format(floatval($price ?? 0), 2);
-}
-
-// Get filtered orders for the current user
-$userOrders = getUserOrders($email, $statusFilter);
+include('./nav.php')
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Orders - FATIMA HOME WORLD CENTER</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="track.css">
+    <title>Your Orders</title>
+    <style>
+        #order-filters button {
+    background-color: #eee;
+    border: none;
+    padding: 10px 15px;
+    margin: 0 5px 10px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#order-filters button:hover {
+    background-color: #ccc;
+}
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        
+        h1 {
+            margin-top: 140px;
+            color: #444;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .status-section {
+            margin-bottom: 40px;
+        }
+        
+        .status-heading {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid;
+        }
+        
+        .status-pending .status-heading { color: #e67e22; border-color: #e67e22; }
+        .status-processing .status-heading { color: #3498db; border-color: #3498db; }
+        .status-completed .status-heading { color: #27ae60; border-color: #27ae60; }
+        .status-cancelled .status-heading { color: #e74c3c; border-color: #e74c3c; }
+        
+        .order-card {
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .order-card h2 {
+            margin-top: 0;
+            color: #555;
+            font-size: 1.3em;
+        }
+        
+        .order-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .order-items {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+        
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f5f5f5;
+            position: relative;
+        }
+        
+        .order-item img {
+            border-radius: 3px;
+            object-fit: cover;
+            width: 80px;
+            height: 80px;
+        }
+        
+        .item-status {
+            position: absolute;
+            top: 12px;
+            right: 0;
+            font-size: 0.8em;
+            padding: 3px 8px;
+            border-radius: 3px;
+        }
+        
+        .pending { background-color: #fdf0e6; color: #e67e22; }
+        .processing { background-color: #ebf5fb; color: #3498db; }
+        .completed { background-color: #e8f8f0; color: #27ae60; }
+        .cancelled { background-color: #fdedec; color: #e74c3c; }
+        
+        .order-summary {
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 3px;
+            margin-top: 15px;
+        }
+        
+        .order-summary p {
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            max-width: 300px;
+        }
+        
+        .order-summary p:last-child {
+            font-weight: bold;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        
+        .no-orders {
+            text-align: center;
+            padding: 50px;
+            color: #777;
+        }
+    </style>
 </head>
-
 <body>
-    <?php include("./nav.php") ?>
-    <div class="container">
-        <header>
-            <h1>FATIMA HOME WORLD CENTER</h1>
-        </header>
+    <h1>Your Orders</h1>
+    <div id="order-filters" style="margin-bottom: 20px;">
+    <button onclick="filterOrders('all')">All</button>
+    <button onclick="filterOrders('pending')">Pending</button>
+    <button onclick="filterOrders('to ship')">To Ship</button>
+    <button onclick="filterOrders('shipped')">Shipped</button>
+    <button onclick="filterOrders('out for delivery')">Out For Delivery</button>
+    <button onclick="filterOrders('delivered')">Delivered</button>
+</div>
 
-        <div class="my-orders-container">
-            <h2>My Order History</h2>
-
-            <!-- Status Filters -->
-            <div class="status-filters">
-                <a href="?status=all" class="status-filter <?php echo $statusFilter === 'all' ? 'active' : ''; ?>">
-                    All Orders
-                </a>
-                <a href="?status=" class="status-filter <?php echo $statusFilter === 'pending' ? 'active' : ''; ?>">
-                    Pending
-                </a>
-                <a href="?status=to ship" class="status-filter <?php echo $statusFilter === 'to ship' ? 'active' : ''; ?>">
-                    To Ship
-                </a>
-                <a href="?status=shipped" class="status-filter <?php echo $statusFilter === 'shipped' ? 'active' : ''; ?>">
-                    Shipped
-                </a>
-                <a href="?status=out for delivery" class="status-filter <?php echo $statusFilter === 'out for delivery' ? 'active' : ''; ?>">
-                    Out for Delivery
-                </a>
-                <a href="?status=delivered" class="status-filter <?php echo $statusFilter === 'delivered' ? 'active' : ''; ?>">
-                    Delivered
-                </a>
-            </div>
-
-            <?php if (empty($userOrders)): ?>
-                <div class="no-orders">
-                    <i class="fas fa-shopping-basket"></i>
-                    <h3>No Orders Found</h3>
-                    <p>You don't have any orders in your history yet.</p>
-                    <a href="shop.php" class="btn">Start Shopping</a>
-                </div>
-            <?php else: ?>
-                <?php foreach ($userOrders as $order): ?>
-                    <?php 
-                    // Get order items with the same status filter
-                    $orderItems = getOrderItems($order['order_id'], $statusFilter); 
+    <?php
+    // First get all distinct statuses for this user's orders
+    $status_sql = "SELECT DISTINCT o.order_status 
+                   FROM orders o
+                   JOIN shipping s ON o.order_id = s.order_id
+                   WHERE s.firstname = ? AND s.lastname = ? AND s.email = ?";
+    $status_stmt = mysqli_prepare($connection, $status_sql);
+    mysqli_stmt_bind_param($status_stmt, "sss", $firstname, $lastname, $email);
+    mysqli_stmt_execute($status_stmt);
+    $status_result = mysqli_stmt_get_result($status_stmt);
+    
+    $all_statuses = [];
+    while ($status_row = mysqli_fetch_assoc($status_result)) {
+        $all_statuses[] = $status_row['order_status'];
+    }
+    
+    // If no orders found
+    if (empty($all_statuses)) {
+        echo '<div class="no-orders"><p>You haven\'t placed any orders yet.</p></div>';
+    }
+    
+    // Display orders grouped by status
+    foreach ($all_statuses as $status) {
+        // Get orders for this status
+        $order_sql = "SELECT o.*, s.* 
+                     FROM orders o
+                     JOIN shipping s ON o.order_id = s.order_id
+                     WHERE o.order_status = ?
+                     AND s.firstname = ? AND s.lastname = ? AND s.email = ?
+                     ORDER BY o.order_date DESC";
+        $order_stmt = mysqli_prepare($connection, $order_sql);
+        mysqli_stmt_bind_param($order_stmt, "ssss", $status, $firstname, $lastname, $email);
+        mysqli_stmt_execute($order_stmt);
+        $order_result = mysqli_stmt_get_result($order_stmt);
+        
+        if (mysqli_num_rows($order_result) > 0) {
+            echo '<div class="status-section status-' . htmlspecialchars($status) . '">';
+            echo '<h2 class="status-heading">' . ucwords(htmlspecialchars($status)) . ' Orders</h2>';
+            
+            while ($order = mysqli_fetch_assoc($order_result)) {
+                $order_id = $order['order_id'];
+                $order_date = $order['order_date'];
+                $total_amount = $order['total_amount'];
+                
+                // Get order items
+                $items_sql = "SELECT * FROM order_items WHERE order_id = ?";
+                $items_stmt = mysqli_prepare($connection, $items_sql);
+                mysqli_stmt_bind_param($items_stmt, "s", $order_id);
+                mysqli_stmt_execute($items_stmt);
+                $items_result = mysqli_stmt_get_result($items_stmt);
+                ?>
+                
+                <div class="order-card">
+                    <h2>Order #<?php echo htmlspecialchars($order_id); ?></h2>
                     
-                    // Skip empty orders (when filtered)
-                    if (empty($orderItems) && $statusFilter !== 'all') {
-                        continue;
-                    }
-                    ?>
-                    <div class="order-card">
-                        <div class="order-header">
-                            <div class="order-header-left">
-                                <h3>Order #<?php echo htmlspecialchars($order['order_id']); ?></h3>
-                                <p class="tracking-number">Tracking #: <?php echo htmlspecialchars($order['tracking_number'] ?? 'Not available'); ?></p>
-                                <p class="order-date">Order Date: <?php echo formatDate($order['order_date']); ?></p>
-                            </div>
-                            <div class="order-header-right">
-                                <span class="order-status <?php echo strtolower(str_replace(' ', '-', $order['order_status'])); ?>">
-                                    <?php echo htmlspecialchars(ucwords($order['order_status'])); ?>
-                                </span>
-                                <p class="order-total">Total: <?php echo formatPrice($order['total_amount']); ?></p>
-                            </div>
-                        </div>
-                        
-                        <div class="order-items">
-                            <?php if (!empty($orderItems)): ?>
-                                <div class="products-grid">
-                                    <?php foreach ($orderItems as $item): 
-                                        // Calculate tax properly - 8% of price * quantity
-                                        $tax = $item['price'] * 0.08 * $item['quantity'];
-                                        
-                                        // Set fixed shipping cost per item
-                                        $shipping = 10;
-                                        
-                                        // Calculate total with tax and shipping
-                                        $total = ($item['price'] * $item['quantity']) + $tax + $shipping;
-                                    ?>
-                                        <div class="product-card">
-                                            <div class="product-image-container">
-                                                <img src="<?php echo htmlspecialchars($item['product_image']); ?>" 
-                                                    alt="<?php echo htmlspecialchars($item['product_name']); ?>" 
-                                                    class="product-image">
-                                                <span class="product-status-badge <?php echo htmlspecialchars(getOrderStatusBadge($item['order_status'])[1]); ?>">
-                                                    <?php echo htmlspecialchars(getOrderStatusBadge($item['order_status'])[0]); ?>
-                                                </span>
-                                            </div>
-                                            <div class="product-details">
-                                                <h4 class="product-name"><?php echo htmlspecialchars($item['product_name']); ?></h4>
-                                                <p class="product-code">Product Code: <?php echo htmlspecialchars($item['order_id']); ?></p>
-                                                <p class="product-price"><?php echo formatPrice($item['price']); ?></p>
-                                                <div class="product-meta">
-                                                    <span>Qty: <?php echo htmlspecialchars($item['quantity']); ?></span>
-                                                    <span><?php echo formatDate($order['order_date']); ?></span>
-                                                </div>
-                                                <!-- Added tax, shipping, and total information -->
-                                                <div class="product-cost-breakdown">
-                                                    <div class="cost-row">
-                                                        <span class="cost-label">Tax (8%):</span>
-                                                        <span class="cost-value"><?php echo formatPrice($tax); ?></span>
-                                                    </div>
-                                                    <div class="cost-row">
-                                                        <span class="cost-label">Shipping:</span>
-                                                        <span class="cost-value"><?php echo formatPrice($shipping); ?></span>
-                                                    </div>
-                                                    <div class="cost-row total">
-                                                        <span class="cost-label">Total:</span>
-                                                        <span class="cost-value"><?php echo formatPrice($total); ?></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                            <?php else: ?>
-                                <div class="no-products">
-                                    <i class="fas fa-shopping-basket"
-                                        style="font-size: 48px; color: var(--medium-gray); margin-bottom: 20px;"></i>
-                                    <h3>No products found in this order</h3>
-                                    <p>This order doesn't have any products associated with it.</p>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                        
-                        <div class="order-footer">
-                            <div class="shipping-info">
-                                <h4>Shipping Information</h4>
-                                <p><?php echo htmlspecialchars($order['customer_name']); ?></p>
-                                <p><?php echo htmlspecialchars($order['address']); ?></p>
-                                <p><?php echo htmlspecialchars($order['city'] . ', ' . $order['state'] . ' ' . $order['zip']); ?></p>
-                                <p>Phone: <?php echo htmlspecialchars($order['phone']); ?></p>
-                                <p>Email: <?php echo htmlspecialchars($order['email']); ?></p>
-                            </div>
-                            <div class="order-totals">
-                                <table class="totals-table">
-                                    <tr>
-                                        <td>Subtotal:</td>
-                                        <td><?php echo formatPrice($order['total_amount'] - ($order['total_amount'] * 0.08)); ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tax (8%):</td>
-                                        <td><?php echo formatPrice($order['total_amount'] * 0.08); ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Shipping:</td>
-                                        <td><?php echo formatPrice(count($orderItems) * 10); ?></td>
-                                    </tr>
-                                    <tr class="grand-total">
-                                        <td>Total:</td>
-                                        <td><?php echo formatPrice($order['total_amount'] + (count($orderItems) * 10)); ?></td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="order-meta">
+                        <span>Placed on: <?php echo date('F j, Y, g:i a', strtotime($order_date)); ?></span>
                     </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </div>
-
-        <div class="help-section">
-            <h3>Need Help?</h3>
-            <div class="help-buttons">
-                <a href="contact.php" class="help-button">
-                    <i class="fas fa-envelope"></i> Contact Support
-                </a>
-                <a href="faq.php" class="help-button">
-                    <i class="fas fa-question-circle"></i> FAQ
-                </a>
-                <a href="tel:+639123456789" class="help-button">
-                    <i class="fas fa-phone"></i> Call Us
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <p>&copy; <?php echo date('Y'); ?> FATIMA HOME WORLD CENTER. All rights reserved.</p>
-        <p>Your trusted partner for home improvement and construction materials.</p>
-        <div class="social-icons">
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-youtube"></i></a>
-        </div>
-    </footer>
+                    
+                    <?php if (mysqli_num_rows($items_result) > 0) { ?>
+                        <div class="order-items">
+                            <?php 
+                            $subtotal = 0;
+                            while ($item = mysqli_fetch_assoc($items_result)) {
+                                $quantity = $item['quantity'];
+                                $price = $item['price'];
+                                $item_total = $quantity * $price;
+                                $subtotal += $item_total;
+                                ?>
+                                <div class="order-item">
+                                    <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="Product">
+                                    <div>
+                                        <h3><?php echo htmlspecialchars($item['product_name'] ?? 'Product'); ?></h3>
+                                        <p>Quantity: <?php echo htmlspecialchars($quantity); ?></p>
+                                        <p>Price: ₱<?php echo number_format($price, 2); ?></p>
+                                    </div>
+                                    <span class="item-status <?php echo htmlspecialchars($status); ?>">
+                                        <?php echo ucwords(htmlspecialchars($status)); ?>
+                                    </span>
+                                </div>
+                                <?php
+                            }
+                            
+                            $tax = $subtotal * 0.08;
+                            $shipping = 10;
+                            $grand_total = $subtotal + $tax + $shipping;
+                            ?>
+                        </div>
+                        
+                        <div class="order-summary">
+                            <p><span>Subtotal:</span> <span>₱<?php echo number_format($subtotal, 2); ?></span></p>
+                            <p><span>Tax (8%):</span> <span>₱<?php echo number_format($tax, 2); ?></span></p>
+                            <p><span>Shipping:</span> <span>₱<?php echo number_format($shipping, 2); ?></span></p>
+                            <p><span>Total:</span> <span>₱<?php echo number_format($grand_total, 2); ?></span></p>
+                        </div>
+                    <?php } ?>
+                </div>
+                <?php
+            }
+            
+            echo '</div>'; // Close status-section
+        }
+    }
+    
+    mysqli_close($connection);
+    ?>
 </body>
-
 </html>
+<script>
+function filterOrders(status) {
+    const sections = document.querySelectorAll('.status-section');
+    sections.forEach(section => {
+        const sectionStatus = section.classList[1].replace('status-', '').toLowerCase();
+        if (status === 'all' || sectionStatus === status.toLowerCase()) {
+            section.style.display = 'block';
+        } else {
+            section.style.display = 'none';
+        }
+    });
+}
+</script>

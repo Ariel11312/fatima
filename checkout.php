@@ -567,7 +567,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                                     <div class="item-info">
                                         <div class="item-name"><?php echo htmlspecialchars($item['name']); ?></div>
                                         <div class="item-price">
-                                            $<?php echo number_format($item['price'], 2); ?>
+                                        ₱<?php echo number_format($item['price'], 2); ?>
                                             <span class="item-quantity">x<?php echo $item['quantity']; ?></span>
                                         </div>
                                     </div>
