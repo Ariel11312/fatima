@@ -49,118 +49,6 @@ if( $_SESSION['isAdmin'] != "true"){
         <title>Inventory Management - FATIMA HOME WORLD CENTER</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="./products.css">
-        <style>
-            /* Additional styles for the success modal */
-            .success-modal {
-                display: none;
-                position: fixed;
-                z-index: 1000;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                background-color: rgba(0,0,0,0.4);
-            }
-            
-            .success-modal-content {
-                background-color: #fefefe;
-                margin: 15% auto;
-                padding: 30px 20px;
-                border: 1px solid #888;
-                width: 300px;
-                text-align: center;
-                border-radius: 5px;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            }
-            
-            .success-modal p {
-                font-size: 18px;
-                margin: 20px 0;
-            }
-            
-            .success-modal button {
-                padding: 8px 16px;
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-            
-            .success-modal button:hover {
-                background-color: #45a049;
-            }
-            
-            /* Check Animation */
-            .checkmark-circle {
-                width: 80px;
-                height: 80px;
-                position: relative;
-                display: inline-block;
-                vertical-align: top;
-                margin-left: auto;
-                margin-right: auto;
-            }
-            
-            .checkmark-circle .background {
-                width: 80px;
-                height: 80px;
-                border-radius: 50%;
-                background: #4CAF50;
-                position: absolute;
-            }
-            
-            .checkmark-circle .checkmark {
-                border-radius: 5px;
-            }
-            
-            .checkmark-circle .checkmark.draw:after {
-                animation-delay: 100ms;
-                animation-duration: 800ms;
-                animation-timing-function: ease;
-                animation-name: checkmark;
-                transform: scaleX(-1) rotate(135deg);
-                animation-fill-mode: forwards;
-            }
-            
-            .checkmark-circle .checkmark:after {
-                opacity: 0;
-                height: 40px;
-                width: 20px;
-                transform-origin: left top;
-                border-right: 7px solid white;
-                border-top: 7px solid white;
-                border-radius: 2px !important;
-                content: '';
-                left: 17px;
-                top: 45px;
-                position: absolute;
-            }
-            
-            @keyframes checkmark {
-                0% {
-                    height: 0;
-                    width: 0;
-                    opacity: 1;
-                }
-                20% {
-                    height: 0;
-                    width: 20px;
-                    opacity: 1;
-                }
-                40% {
-                    height: 40px;
-                    width: 20px;
-                    opacity: 1;
-                }
-                100% {
-                    height: 40px;
-                    width: 20px;
-                    opacity: 1;
-                }
-            }
-            </style>
 <?php include("sidebar.php")?>
 </head>
 <!-- Add New Item Modal -->
@@ -422,7 +310,61 @@ if( $_SESSION['isAdmin'] != "true"){
         <button id="closeSuccessModal">Close</button>
     </div>
 </div>
-
+<!-- Adjust Quantity Modal -->
+<div id="adjustQuantityModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Adjust Quantity</h2>
+            <span class="close-modal close-adjust-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="adjustQuantityForm">    
+                <div class="form-group">
+                    <label for="adjust-item-id">SKU</label>
+                    <input type="text" id="adjust-item-id" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="adjust-item-name">Item Name</label>
+                    <input type="text" id="adjust-item-name" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="adjust-item-category">Category</label>
+                    <input type="text" id="adjust-item-category" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="current-quantity">Current Quantity</label>
+                    <input type="number" id="current-quantity" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="adjustment-type">Adjustment Type</label>
+                    <select id="adjustment-type" required>
+                        <option value="add">Add to Stock</option>
+                        <option value="subtract">Remove from Stock</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="adjustment-item">Quantity</label>
+                <input type="text" id="adjustment-item" placeholder="Enter quantity to add or remove" required> 
+                </div>
+                                
+                <div class="form-group">
+                    <label for="adjustment-reason">Reason (Optional)</label>
+                    <input type="text" id="adjustment-reason" placeholder="e.g. Restock, Sale, etc.">
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-quantity">New Quantity</label>
+                    <input type="number" id="new-quantity" readonly>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button id="cancelAdjustQuantity" class="btn cancel-btn">Cancel</button>
+            <button id="confirmAdjustQuantity" class="btn primary-btn">Save Adjustment</button>
+        </div>
+    </div>
+</div>
 <body>
     <!-- Navbar would be included here -->
 
