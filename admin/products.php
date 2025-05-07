@@ -231,7 +231,7 @@ if( $_SESSION['isAdmin'] != "true"){
                     
                     <div class="form-group">
                         <label for="edit-item-quantity">Quantity</label>
-                        <input type="number" id="edit-item-quantity" min="0" required>
+                        <input type="number" id="edit-item-quantity" min="0" readonly>
                     </div>
                 </div>
                 
